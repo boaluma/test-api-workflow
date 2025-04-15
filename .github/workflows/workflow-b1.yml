@@ -1,0 +1,32 @@
+name: workflow-b1
+
+on:
+  repository_dispatch:
+    types: [trigger-workflow-b1]
+
+permissions:
+  contents: read
+  actions: write  # Required to dispatch back to repo-a
+
+jobs:
+  fetch-and-trigger-a2:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Fetch users
+        id: api
+        run: |
+          response=$(curl -s https://fake-json-api.mock.beeceptor.com/users)
+          echo "response<<EOF" >> $GITHUB_ENV
+          echo "$response" >> $GITHUB_ENV
+          echo "EOF" >> $GITHUB_ENV
+
+      - name: Trigger workflow-a2 in Repo A
+        uses: peter-evans/repository-dispatch@v3
+        with:
+          token: ${{ secrets.GITHUB_TOKEN }}
+          repository: boaluma/workflow-demo
+          event-type: trigger-workflow-a2
+          client-payload: |
+            {
+              "users": ${{ env.response }}
+            }
