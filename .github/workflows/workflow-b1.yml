@@ -23,7 +23,7 @@ jobs:
       - name: Trigger workflow-a2 in Repo A
         uses: peter-evans/repository-dispatch@v3
         with:
-          token: ${{ secrets.GITHUB_TOKEN }}
+          token: ${{ secrets.REPO_DISPATCH_TOKEN }}
           repository: boaluma/workflow-demo
           event-type: trigger-workflow-a2
           client-payload: |
