@@ -19,12 +19,14 @@ jobs:
           echo "response<<EOF" >> $GITHUB_ENV
           echo "$response" >> $GITHUB_ENV
           echo "EOF" >> $GITHUB_ENV
+          echo "$response"
+          echo "${{ github.event.client_payload.source_repo }}"
 
       - name: Trigger workflow-a2 in Repo A
         uses: peter-evans/repository-dispatch@v3
         with:
           token: ${{ secrets.REPO_DISPATCH_TOKEN }}
-          repository: boaluma/workflow-demo
+          repository: ${{ github.event.client_payload.source_repo }}
           event-type: trigger-workflow-a2
           client-payload: |
             {
