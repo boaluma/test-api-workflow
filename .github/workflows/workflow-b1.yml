@@ -19,7 +19,7 @@ jobs:
           echo "${{ github.event.client_payload.owner_name }}"
           echo "----------------------------------------------------"
           ticker=$(echo "${{ github.event.client_payload.repo_name }}" | cut -d'-' -f2)
-          echo ticker
+          echo $ticker
       - name: Fetch users
         id: api
         run: |
